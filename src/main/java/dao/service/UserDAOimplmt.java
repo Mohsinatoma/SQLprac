@@ -96,10 +96,11 @@ public class UserDAOimplmt implements UserDAO {
        String str="SELECT * FROM Employee_table2 WHERE NAME=?";
       
 		try (PreparedStatement statement = DBConnection.getConnection().prepareStatement(str)) {
-            
+			
 			statement.setString(1, i);
 			 statement.execute();
-		
+			
+	
 			 ResultSet rs =statement.getResultSet();
 			
 			 while (rs.next()){
@@ -110,7 +111,6 @@ public class UserDAOimplmt implements UserDAO {
 				    salary=rs.getFloat("SALARY");
 				    salary=Math.abs(salary);
 				  
-				System.out.print(salary);
 				    return name+","+country+","+city+","+zipcode+","+salary;
 				   
 				}
@@ -128,14 +128,148 @@ public class UserDAOimplmt implements UserDAO {
 
     
 	public boolean deleteUser(String d) throws SQLException {
+	    
+		String str="SELECT * FROM Employee_table2 WHERE NAME=?";
+		String str2="SELECT * FROM Employee_table2";
+		String str1="DELETE FROM Employee_table2 WHERE NAME=?";
+		String name=null,country=null,city=null,zipcode=null;
+		String name1=null,country1=null,city1=null,zipcode1=null;
+		float salary = 0;
+		
+		PreparedStatement statement = DBConnection.getConnection().prepareStatement(str) ;
+		statement.setString(1, d);
+		statement.execute();
+		ResultSet rs =statement.getResultSet();
+		
+		while(rs.next())
+		{ 
+			name =rs.getString("NAME");
+		     country = rs.getString("COUNTRY");
+		     city = rs.getString("CITY");
+		     zipcode = rs.getString("ZIPCODE");
+		     salary=rs.getFloat("SALARY");
+		     salary=Math.abs(salary);
+		    
+		 }
+			
+		
+		     
+			    
+			   try (PreparedStatement statement3 = DBConnection.getConnection().prepareStatement(str2)){
+				 
+				   statement3.setString(1, d);
+					statement3.execute();
+					ResultSet rs1 =statement3.getResultSet();
+					 System.out.println(rs1);
+				 while (rs1.next()) {
+				
+					  name1 =rs1.getString("NAME");
+					   country1 = rs1.getString("COUNTRY");
+					   city1 = rs1.getString("CITY");
+					   zipcode1 = rs1.getString("ZIPCODE");
+					   System.out.println(name1);
+					   if(name1.equals(name) && country1.equals(country)&& city1.equals(city) && zipcode1.equals(zipcode)) {
+						   PreparedStatement statement1 = DBConnection.getConnection().prepareStatement(str1) ;
+							statement1.setString(1, d);
+					       return statement1.execute();
+				 }
+			   }
+			    
+			   }catch(Exception e){
+					log.error("Not Done "+e.getMessage());
+				}	
+			
+		return false;
+	}
+
+
+
+	public String SearchbyNameAndCountry(String n, String c) {
+		
+		String name=null,country=null,city=null,zipcode=null;
+		float salary;
+       String str="SELECT * FROM Employee_table2 WHERE NAME=? AND COUNTRY=?";
+      
+		try (PreparedStatement statement = DBConnection.getConnection().prepareStatement(str)) {
+            
+			statement.setString(1, n);
+			statement.setString(2, c);
+			 statement.execute();
+		
+			 ResultSet rs =statement.getResultSet();
+			
+			 while (rs.next()){
+				 
+				     name =rs.getString("NAME");
+				     country = rs.getString("COUNTRY");
+				     city = rs.getString("CITY");
+				     zipcode = rs.getString("ZIPCODE");
+				     salary=rs.getFloat("SALARY");
+				     salary=Math.abs(salary);
+				  
+				    return name+","+country+","+city+","+zipcode+","+salary;
+				   
+				}
+
+			}catch(Exception e){
+				log.error("Not Done "+e.getMessage());
+			}
+		return null;
+	}
+
+
+
+	
+    
+	public boolean innerjoin(int i) throws SQLException {
+		
+
+		String str="SELECT Employee_table2.NAME, Employee_table2.COUNTRY,Employee_table2.CITY,Employee_table2.SALARY FROM Employee_table2 INNER JOIN Employee_project ON Employee_table2.id=Employee_project.id where Employee_table2.id=?";
+
+		
+		try (PreparedStatement statement = DBConnection.getConnection().prepareStatement(str)) {
+			statement.setInt(1, i);
+	
+			
+			boolean n= statement.execute();
+		
+		
+             return true;
+			}catch(Exception e){
+				log.error("Not Done "+e.getMessage());
+			}
+	
+		return false;
+	}
+	public boolean nrmldeleteUser(String d) throws SQLException {
 		String str="DELETE FROM Employee_table2 WHERE NAME=?";
-		 
+		int rowsDeleted=0;
 		try (PreparedStatement statement = DBConnection.getConnection().prepareStatement(str)) {
             
 			statement.setString(1, d);
-			int rowsDeleted = statement.executeUpdate();
+			 rowsDeleted = statement.executeUpdate();
 
-			return true;
+			
+			}catch(Exception e){
+				log.error("Not Done "+e.getMessage());
+			}
+		if(rowsDeleted >0) return true;
+		
+		return false;
+	}
+
+
+
+	public boolean wildCard(String s) {
+
+       String str="SELECT * FROM Employee_table2 WHERE NAME like ?";
+      
+		try (PreparedStatement statement = DBConnection.getConnection().prepareStatement(str)) {
+			
+			statement.setString(1, s);
+			 statement.execute();
+		 return true;
+
 			}catch(Exception e){
 				log.error("Not Done "+e.getMessage());
 			}
@@ -145,9 +279,48 @@ public class UserDAOimplmt implements UserDAO {
 
 
 
+	public boolean In() {
+	String str="SELECT * FROM Employee_table2  WHERE Id IN (SELECT Id FROM Employee_project)";
+	try (PreparedStatement statement = DBConnection.getConnection().prepareStatement(str)) {
+	  boolean n=statement.execute();
+	  return n;
+
+		}catch(Exception e){
+			log.error("Not Done "+e.getMessage());
+		}
+		
+		return false;
+	}
 	
 
+	public boolean leftjoin() {
+	String str="SELECT * FROM Employee_table2 LEFT JOIN Employee_project ON  Employee_table2.Id=Employee_project.Id;";
+	try (PreparedStatement statement = DBConnection.getConnection().prepareStatement(str)) {
+	  boolean n=statement.execute();
+	  return n;
+
+		}catch(Exception e){
+			log.error("Not Done "+e.getMessage());
+		}
+		
+		return false;
+	}
 
 
+
+	public boolean rightjoin() {
+		String str="SELECT * FROM Employee_table2 RIGHT JOIN Employee_project ON  Employee_table2.Id=Employee_project.Id;";
+		try (PreparedStatement statement = DBConnection.getConnection().prepareStatement(str)) {
+		  boolean n=statement.execute();
+		  return n;
+
+			}catch(Exception e){
+				log.error("Not Done "+e.getMessage());
+			}
+			
+			return false;
+	}
+	
+	
 
 }

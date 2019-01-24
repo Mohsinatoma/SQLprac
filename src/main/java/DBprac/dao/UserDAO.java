@@ -1,8 +1,10 @@
 package DBprac.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import DBprac.model.User;
+import dao.dbUtil.DBConnection;
 
 public interface UserDAO {
     public boolean addUser(User u) throws SQLException;
@@ -11,3 +13,9 @@ public interface UserDAO {
     public String searchByName(String d) throws SQLException;
     
 }
+
+
+
+
+	 
+	

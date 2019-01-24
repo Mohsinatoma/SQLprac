@@ -14,7 +14,7 @@ public class DBOperation {
 //		// Create a Table 
 //		
 //		 String sql = "CREATE TABLE Employee_table2" +
-//                 "(Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, " +
+//                 "(Id INT NOT NULL IDENTITY(1,1)  PRIMARY KEY, " +
 //                 "NAME NVARCHAR(50) NOT NULL, " + 
 //                 "COUNTRY NVARCHAR(50) NOT NULL, " + 
 //                 "CITY NVARCHAR(50) NOT NULL, " +	                   
