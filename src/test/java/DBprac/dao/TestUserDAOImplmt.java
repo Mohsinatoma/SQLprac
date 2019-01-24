@@ -35,6 +35,6 @@ public class TestUserDAOImplmt {
 	public void testSearch() throws SQLException {
 		
 	String n=u.searchByName("Toma1");
-	assertEquals("Toma1," + "Bangladesh1," + "Dhaka6," + "z20161", n);
+	assertEquals("Toma1," + "Bangladesh1," + "Dhaka6," + "z20161,"+"34.56", n);
 	}
 }

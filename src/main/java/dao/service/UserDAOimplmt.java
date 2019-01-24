@@ -92,6 +92,7 @@ public class UserDAOimplmt implements UserDAO {
 	public String searchByName(String i) throws SQLException {
     
 		String name=null,country=null,city=null,zipcode=null;
+		float salary;
        String str="SELECT * FROM Employee_table2 WHERE NAME=?";
       
 		try (PreparedStatement statement = DBConnection.getConnection().prepareStatement(str)) {
@@ -106,9 +107,11 @@ public class UserDAOimplmt implements UserDAO {
 				     country = rs.getString("COUNTRY");
 				     city = rs.getString("CITY");
 				    zipcode = rs.getString("ZIPCODE");
+				    salary=rs.getFloat("SALARY");
+				    salary=Math.abs(salary);
 				  
-				
-				    return name+","+country+","+city+","+zipcode;
+				System.out.print(salary);
+				    return name+","+country+","+city+","+zipcode+","+salary;
 				   
 				}
 
