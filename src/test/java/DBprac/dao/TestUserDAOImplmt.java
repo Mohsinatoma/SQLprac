@@ -71,4 +71,8 @@ public class TestUserDAOImplmt {
 	public void testri8join() throws SQLException {	
 	assertTrue(u.rightjoin());
 	}
+	@Test
+	public void testselfjoin() throws SQLException {	
+	assertTrue(u.selfjoin());
+	}
 }

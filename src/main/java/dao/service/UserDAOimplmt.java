@@ -306,7 +306,9 @@ public class UserDAOimplmt implements UserDAO {
 		return false;
 	}
 
-
+//Query for self-join--->select A.NAME as Employee_name1, B.NAME as Employee_name2
+	//from Employee_table2 A, Employee_table2 B
+	// where A.Id <> B.Id and A.city=B.city 
 
 	public boolean rightjoin() {
 		String str="SELECT * FROM Employee_table2 RIGHT JOIN Employee_project ON  Employee_table2.Id=Employee_project.Id;";
@@ -321,6 +323,17 @@ public class UserDAOimplmt implements UserDAO {
 			return false;
 	}
 	
-	
+	public boolean selfjoin() {
+		String str="select A.NAME as Employee_name1, B.NAME as Employee_name2from Employee_table2 A, Employee_table2 Bwhere A.Id <> B.Id and A.city=B.city ";
+		try (PreparedStatement statement = DBConnection.getConnection().prepareStatement(str)) {
+		  boolean n=statement.execute();
+		  return n;
+
+			}catch(Exception e){
+				log.error("Not Done "+e.getMessage());
+			}
+			
+			return false;
+	}
 
 }
